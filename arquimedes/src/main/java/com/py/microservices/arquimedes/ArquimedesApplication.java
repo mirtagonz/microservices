@@ -1,4 +1,4 @@
-package com.example.arquimedes;
+package com.py.microservices.arquimedes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

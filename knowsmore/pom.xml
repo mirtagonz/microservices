@@ -8,11 +8,11 @@
 		<version>2.2.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.py.microservicios</groupId>
+	<groupId>com.py.microservices</groupId>
 	<artifactId>knowsmore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>knowsmore</name>
-	<description>Microservicio que todo lo sabe :)</description>
+	<description>Servidor de configuraciones. Microservicio que todo lo sabe :)</description>
 
 	<properties>
 		<java.version>1.8</java.version>

@@ -53,6 +53,7 @@ services:
             - "spring.cloud.config.uri=http://knowsmore:8888/"
             #- "SPRING_PROFILES_ACTIVE=dev"
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+            
   knowsmore: #configuration-server
     container_name: knowsmore
     image: 'img/knowsmore'
@@ -65,6 +66,14 @@ services:
       - arquimedes:arquimedes
     networks:
       - micro
+
+  zipkin-server:
+        container_name: 'zipkin'
+        image: 'openzipkin/zipkin'
+        ports:
+             - '9411:9411'
+        networks:
+             - micro
 
 networks:
   micro:

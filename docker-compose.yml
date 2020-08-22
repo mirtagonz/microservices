@@ -1,0 +1,71 @@
+version: '3.3'
+services:
+  golden:
+    container_name: golden
+    build:
+      context: ./golden
+      dockerfile: Dockerfile
+    image: 'img/golden'
+    ports:
+      - '8090:8090'
+    links:
+      - arquimedes:arquimedes
+      - knowsmore:knowsmore
+    depends_on:
+      - knowsmore
+      - arquimedes
+    networks:
+      - micro
+    environment:
+            - spring.cloud.config.uri=http://knowsmore:8888/
+            #- "SPRING_PROFILES_ACTIVE=dev"
+            - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+
+  arquimedes: #eureka-server
+    container_name: arquimedes
+    build:
+        context: ./arquimedes
+        dockerfile: Dockerfile
+    image: 'img/arquimedes'
+    ports:
+      - '8761:8761'
+    networks:
+      - micro
+    environment:
+            - "spring.cloud.config.uri=http://knowsmore:8888/"
+            #- "SPRING_PROFILES_ACTIVE=dev"
+
+  gandalf:  #zuul-api-gateway
+    container_name: gandalf
+    build:
+        context: ./gandalf
+        dockerfile: Dockerfile
+    image: 'img/gandalf'
+    links:
+      - arquimedes:arquimedes
+      - knowsmore:knowsmore
+      - golden:golden
+    ports:
+      - '8181:8181'
+    networks:
+      - micro
+    environment:
+            - "spring.cloud.config.uri=http://knowsmore:8888/"
+            #- "SPRING_PROFILES_ACTIVE=dev"
+            - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+  knowsmore: #configuration-server
+    container_name: knowsmore
+    image: 'img/knowsmore'
+    build:
+        context: ./knowsmore
+        dockerfile: Dockerfile
+    ports:
+      - '8888:8888'
+    links:
+      - arquimedes:arquimedes
+    networks:
+      - micro
+
+networks:
+  micro:
+    driver: bridge

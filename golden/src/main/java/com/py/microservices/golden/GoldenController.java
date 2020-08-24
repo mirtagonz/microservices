@@ -39,6 +39,12 @@ public class GoldenController {
     @Autowired
     private GoldenService goldenService;
 
+    @RequestMapping("/service-instances/{applicationName}")
+    public List<ServiceInstance> serviceInstancesByApplicationName(
+            @PathVariable String applicationName) {
+        return this.discoveryClient.getInstances(applicationName);
+    }
+
     @GetMapping("/person-data/{ci}")
     @HystrixCommand(fallbackMethod = "fallbackData", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",

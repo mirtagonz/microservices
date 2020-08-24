@@ -1,4 +1,4 @@
-package com.example.golden;
+package com.py.microservices.golden;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

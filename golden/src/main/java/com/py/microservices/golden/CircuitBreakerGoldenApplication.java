@@ -16,23 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @EnableCircuitBreaker
-@RestController
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableEurekaClient
 public class CircuitBreakerGoldenApplication {
 
-	@Value("${spring.application.name}")
-	private String appName;
-
 	@Bean
 	public RestTemplate rest(RestTemplateBuilder builder) {
 		return builder.build();
-	}
-
-	@RequestMapping(value = "/alo")
-	public String helloWorld() {
-		return "Hello world";
 	}
 
 	public static void main(String[] args) {

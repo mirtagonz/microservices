@@ -10,12 +10,8 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,5 +58,19 @@ public class GoldenController {
 
     public ResponseEntity<PersonDataDTO> fallbackData(String ci){
         return ResponseEntity.ok(new PersonDataDTO());
+    }
+
+    @PostMapping("/person-data")
+    @HystrixCommand(fallbackMethod = "fallbackSave", commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
+                    value = MAX_TIME)
+    })
+    public ResponseEntity<Boolean> setPersonData(@RequestBody PersonDataDTO personDataDTO) throws Exception {
+        goldenService.setPersonData(personDataDTO);
+        return ResponseEntity.ok(true);
+    }
+
+    public ResponseEntity<Boolean> fallbackSave(PersonDataDTO personDataDTO){
+        return ResponseEntity.ok(false);
     }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 @RefreshScope
 public class GoldenController {
 
-    public static final String MAX_TIME = "5000";
+    public static final String MAX_TIME = "1000";
 
     private Logger LOGGER = LoggerFactory.getLogger(GoldenController.class);
 

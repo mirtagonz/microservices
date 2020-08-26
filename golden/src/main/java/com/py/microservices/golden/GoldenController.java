@@ -46,7 +46,7 @@ public class GoldenController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
                     value = MAX_TIME)
     })
-    public ResponseEntity<PersonDataDTO> getPersonData(@PathVariable("ci") String ci) throws Exception {
+    public ResponseEntity<Object> getPersonData(@PathVariable("ci") String ci) throws Exception {
         if (timeout != null) {
             LOGGER.info("Time out for golden response: {}", timeout);
             Thread.sleep(timeout);
@@ -56,7 +56,7 @@ public class GoldenController {
         return ResponseEntity.ok(goldenService.getPersonData(ci));
     }
 
-    public ResponseEntity<PersonDataDTO> fallbackData(String ci){
-        return ResponseEntity.ok(new PersonDataDTO());
+    public ResponseEntity<Object> fallbackData(String ci){
+        return ResponseEntity.ok("No se pudo procesar tu pedido");
     }
 }

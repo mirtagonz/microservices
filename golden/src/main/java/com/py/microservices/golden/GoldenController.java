@@ -29,6 +29,9 @@ public class GoldenController {
     @Value("${timeoutInMilliseconds:5000}")
     private Long timeout;
 
+    @Value("${fallbackMessage}")
+    private String defaultFallbackMessage = "No se pudo procesar tu pedido";
+
     @Autowired
     private DiscoveryClient discoveryClient;
 
@@ -57,6 +60,6 @@ public class GoldenController {
     }
 
     public ResponseEntity<Object> fallbackData(String ci){
-        return ResponseEntity.ok("No se pudo procesar tu pedido");
+        return ResponseEntity.ok(defaultFallbackMessage);
     }
 }

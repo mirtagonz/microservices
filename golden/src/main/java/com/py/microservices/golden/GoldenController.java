@@ -59,18 +59,4 @@ public class GoldenController {
     public ResponseEntity<PersonDataDTO> fallbackData(String ci){
         return ResponseEntity.ok(new PersonDataDTO());
     }
-
-    @PostMapping("/person-data")
-    @HystrixCommand(fallbackMethod = "fallbackSave", commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
-                    value = MAX_TIME)
-    })
-    public ResponseEntity<Boolean> setPersonData(@RequestBody PersonDataDTO personDataDTO) throws Exception {
-        goldenService.setPersonData(personDataDTO);
-        return ResponseEntity.ok(true);
-    }
-
-    public ResponseEntity<Boolean> fallbackSave(PersonDataDTO personDataDTO){
-        return ResponseEntity.ok(false);
-    }
 }

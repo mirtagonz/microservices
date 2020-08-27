@@ -21,6 +21,20 @@ En la raíz se encuentra el archivos `docker-compose.yml`, para levantar el proy
 Si se quiere volver a construir una sola imagen, ejecutar por ejemplo lo siguiente:
     
     docker-compose up --build --force-recreate --no-deps IMAGEN
+    
+ ## Balanceo de carga
+ El proyecto está preparado para poder levantar multiples instancias del microservicio `kangaroo`. Para eso, con los demás contenedores ya arriba se ejecuta:
+ 
+ ```
+ docker-compose scale kangaroo=<numero de instancias que se desean crear>
+ 
+ Ejemplo
+ docker-compose scale kangaroo=3
+ ```
+ Esto creará multiples instancias de este servicio, luego para levantar dichas instancias se ejecuta:
+ ```
+ docker-compose up -d
+ ```
       
 ## Configuraciones
 Las configuraciones leídas por el servidor de configuraciones para cada uno de los módulos se encuentra en este [repo.](https://github.com/mirtagonz/microservices-configurations)

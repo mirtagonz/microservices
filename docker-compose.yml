@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   kangaroo:
-    container_name: kangaroo
+#    container_name: kangaroo
     build:
         context: ./kangaroo
         dockerfile: Dockerfile
     image: 'img/kangaroo'
     ports:
-      - '8090:8090'
+      - '8090'
     links:
       - arquimedes:arquimedes
       - knowsmore:knowsmore
@@ -93,22 +93,12 @@ services:
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
             - "WAIT_HOSTS_TIMEOUT=100"
 
-  kangaroo2:
-    container_name: kangaroo2
-    image: 'img/kangaroo'
-    depends_on:
-      - knowsmore
-      - arquimedes
+  ha_kangaroo:
+    image: 'tutum/haproxy'
     links:
-      - arquimedes:arquimedes
-      - knowsmore:knowsmore
-    networks:
-      - micro
-    environment:
-            - "spring.cloud.config.uri=http://knowsmore:8888/"
-            - "SPRING_PROFILES_ACTIVE=default"
-            - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
-            - "WAIT_HOSTS_TIMEOUT=100"
+      - kangaroo
+    ports:
+      - "8090:8090"
 
 networks:
   micro:

@@ -18,8 +18,9 @@ services:
       - micro
     environment:
             - "spring.cloud.config.uri=http://knowsmore:8888/"
-            - "SPRING_PROFILES_ACTIVE=default"
+            - "SPRING_PROFILES_ACTIVE=dev"
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+            - "WAIT_HOSTS_TIMEOUT=100"
 
   golden:
     container_name: golden
@@ -42,6 +43,7 @@ services:
             - "spring.cloud.config.uri=http://knowsmore:8888/"
             - "SPRING_PROFILES_ACTIVE=dev"
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+            - "WAIT_HOSTS_TIMEOUT=100"
 
   knowsmore: #configuration-server
     container_name: knowsmore
@@ -89,17 +91,24 @@ services:
             - "spring.cloud.config.uri=http://knowsmore:8888/"
             - "SPRING_PROFILES_ACTIVE=default"
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+            - "WAIT_HOSTS_TIMEOUT=100"
 
   kangaroo2:
-    image: 'tutum/haproxy'
+    container_name: kangaroo2
+    image: 'img/kangaroo'
+    depends_on:
+      - knowsmore
+      - arquimedes
     links:
-      - kangaroo
+      - arquimedes:arquimedes
+      - knowsmore:knowsmore
     networks:
       - micro
     environment:
             - "spring.cloud.config.uri=http://knowsmore:8888/"
             - "SPRING_PROFILES_ACTIVE=default"
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
+            - "WAIT_HOSTS_TIMEOUT=100"
 
 networks:
   micro:

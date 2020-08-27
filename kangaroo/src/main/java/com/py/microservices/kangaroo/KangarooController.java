@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,9 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author mgonzalez
@@ -30,6 +34,11 @@ public class KangarooController {
     @Autowired
     private KangarooService kangarooService;
 
+    @Autowired
+    private Environment environment;
+
+    public static final String DEV_PROFILE = "dev";
+
     @PostMapping(value = "/person-data", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @HystrixCommand(fallbackMethod = "fallbackSave", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",
@@ -37,7 +46,9 @@ public class KangarooController {
     })
     public ResponseEntity<Boolean> setPersonData(@RequestPart("personData") @Valid PersonDataDTO personDataDTO,
                                                  @RequestPart("photo") MultipartFile photo) {
-        kangarooService.savePersonData(personDataDTO);
+        List<String> profiles = Arrays.asList(environment.getActiveProfiles());
+        boolean isDev = profiles == null ? false : profiles.contains(DEV_PROFILE);
+        kangarooService.savePersonData(personDataDTO, isDev);
         return ResponseEntity.ok(true);
     }
 

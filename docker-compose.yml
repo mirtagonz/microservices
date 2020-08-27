@@ -40,7 +40,7 @@ services:
       - micro
     environment:
             - "spring.cloud.config.uri=http://knowsmore:8888/"
-            - "SPRING_PROFILES_ACTIVE=default"
+            - "SPRING_PROFILES_ACTIVE=dev"
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
 
   knowsmore: #configuration-server
@@ -91,14 +91,9 @@ services:
             - "WAIT_HOSTS=knowsmore:8888,arquimedes:8761"
 
   kangaroo2:
-    container_name: kangaroo2
-    image: 'img/kangaroo'
-    depends_on:
-            - knowsmore
-            - arquimedes
+    image: 'tutum/haproxy'
     links:
-      - arquimedes:arquimedes
-      - knowsmore:knowsmore
+      - kangaroo
     networks:
       - micro
     environment:

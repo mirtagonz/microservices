@@ -31,10 +31,7 @@ Si se quiere volver a construir una sola imagen, ejecutar por ejemplo lo siguien
  Ejemplo
  docker-compose scale kangaroo=3
  ```
- Esto creará multiples instancias de este servicio, luego para levantar dichas instancias se ejecuta:
- ```
- docker-compose up -d
- ```
+ Esto creará y levantará multiples instancias de este servicio.
       
 ## Configuraciones
 Las configuraciones leídas por el servidor de configuraciones para cada uno de los módulos se encuentra en este [repo.](https://github.com/mirtagonz/microservices-configurations)

@@ -14,7 +14,7 @@ En la raíz se encuentra el script `build-jars.sh` . Al ejecutar compilará los 
 
 ## Cómo levantar el proyecto usando docker compose
 
-En la raíz se encuentra el archivos `docker-compose.yml`, para levantar el proyecto se debe ejecutar los siguientes en la raíz del proyecto:
+En la raíz se encuentra el archivos `docker-compose.yml`, para levantar el proyecto se debe ejecutar el siguiente comando en la raíz del proyecto:
 
     docker-compose up --build --force-recreate --no-deps
     
